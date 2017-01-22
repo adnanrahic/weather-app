@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>@adnanrahic Weather App</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://use.fontawesome.com/ed9366907b.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.2.0/css/mdb.min.css">
+    <style>
+        body {
+            background: #d3d3d3;
+            height:100vh;
+        }
+        .card-wrp {
+            position:relative;
+            height:calc(100vh - 90px);
+        }
+        .card {
+            background: white;
+            position: absolute;
+            min-height: 350px;
+            width:100%;
+            top: 50% !important;
+            margin-top: -225px !important;
+            border-radius: 3px;
+        }
+        .mr20 {
+            margin-right:20px;
+        }
+        .card-block {
+            padding:20px;
+        }
+        .card-text {
+            float:right;
+            margin-top:-15px;
+            font-size:24px;
+        }
+        .temp-icon {
+            font-size:12px;
+            line-height:inherit;
+            position:relative;
+            top:-10px;
+        }
+        .loading {
+            font-size: 18px;
+            font-weight: 500;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+            <!--Card-->
+            <div class="card-wrp">      
+            <div class="card">
+
+                <!--Card image-->
+                <div class="view overlay hm-white-slight">
+        <!--               <img id="img" src="http://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%287%29.jpg" class="img-fluid" alt=""> -->
+                    <img id="img" src="" class="img-fluid" alt="">
+                    <div class="mask"></div>
+                </div>
+                <!--/.Card image-->
+
+                <!--Card content-->
+                <div id="wrp" class="card-block">
+                    
+                </div>
+                <!--/.Card content-->
+
+            </div>
+            <!--/.Card-->    
+            </div>
+            </div>
+        </div>
+    </div>
+    <!--Footer-->
+    <footer class="page-footer blue center-on-small-only">
+        <!--Copyright-->
+        <div class="footer-copyright">
+            <div class="container-fluid">
+                © 2017 Copyright: <a href="http://www.adnanrahic.github.io"> @adnanrahic </a>
+
+            </div>
+        </div>
+        <!--/.Copyright-->
+    </footer>
+    <!--/.Footer-->
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.2.0/css/mdb.min.css"></script>
+    <script>
+        function get(url) {
+            return new Promise(function(succeed, fail) {
+                var req = new XMLHttpRequest();
+                req.open("GET", url, true);
+                req.addEventListener("load", function() {
+                if (req.status < 400)
+                    succeed(req);
+                else
+                    fail(new Error("Request failed: " + req));
+                });
+                req.addEventListener("error", function() {
+                fail(new Error("Network error"));
+                });
+                req.send(null);
+            });
+        }
+
+        var wrp = document.getElementById("wrp");
+        function showMessage(msg) {
+            var el = document.createElement("div");
+            el.innerText = msg;
+            el.className = "loading";
+            return wrp.appendChild(el);
+        }
+        var loading = showMessage("Loading...");
+
+        var images = {
+            thunderstorm: "http://pre01.deviantart.net/d725/th/pre/f/2013/162/0/1/landscape_with_the_thunderstorm_by_macinivnw-d68mww1.jpg",
+            drizzle: "http://hinhanhdep.pro/content/uploads/2014/10/xem-hinh-anh-con-mua-270-14.jpg",
+            rain: "https://www.ibiza2day.com/wp-content/uploads/2015/03/rain.jpg",
+            snow: "http://restoring-donbass.com/en/wp-content/uploads/2015/10/White-snow-on-a-blank-page.-Lena-Danilova.jpg",
+            atmosphere: "http://kingofwallpapers.com/mist/mist-004.jpg",
+            clear: "http://novatv.mk/wp-content/uploads/2016/07/sunshinesky_ukcountryside_g_wp1.jpg",
+            clouds: "http://www.wetter-foto.de/images/upload/orig/012408.jpg",
+            extreme: "http://m.memegen.com/i7fvjq.jpg"
+        };
+
+        function getImg(id) {
+            if (id >= 200 && id < 300) return images.thunderstorm;
+            else if (id >= 300 && id < 400) return images.drizzle;
+            else if (id >= 500 && id < 600) return images.rain;
+            else if (id >= 600 && id < 700) return images.snow;
+            else if (id >= 700 && id < 800) return images.atmosphere;
+            else if (id >= 800 && id < 801) return images.clear;
+            else if (id >= 801 && id < 900) return images.clouds;
+            else if (id >= 900) return images.extreme;
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude.toFixed(0);
+                var lon = position.coords.longitude.toFixed(0);
+                var api = "http://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+lon+"&units=metric&APPID=91d8f9d77333af1eb29c60bafa59246c";
+                get(api).then(function(res) {
+                    return JSON.parse(res.response);
+                })
+                .then(function(weather) {
+                    init(weather);
+                })
+                .then(function() {
+                    wrp.removeChild(loading);
+                });;
+            });
+        }
+
+
+        function init(weather) {
+            var wImgId = weather.weather[0].id;
+
+            var title = document.createElement("h4");
+            title.className = "card-title";
+            var country = document.createElement("span");
+            country.innerText = weather.sys.country;
+            var city = document.createElement("span");
+            city.innerText = weather.name+", ";
+            title.appendChild(city);
+            title.appendChild(country);
+
+            var content = document.createElement("span");
+            content.className = "card-text";
+            var temperature = document.createElement("span");
+            temperature.innerText = weather.main.temp;
+            temperature.className = "mr20";
+            var tempIcon = document.createElement("span");
+            tempIcon.innerText = "C";
+            tempIcon.className = "temp-icon"
+            temperature.appendChild(tempIcon);
+
+            var icon = document.createElement("span");
+            icon.innerHTML = "<img style='display:inline;' src='http://openweathermap.org/img/w/" + weather.weather[0].icon + ".png'>";
+            var main = document.createElement("span");
+            main.innerText = weather.weather[0].main;
+            content.appendChild(icon);
+            content.appendChild(temperature);
+            content.appendChild(main);
+            
+            console.log(wImgId);
+            console.log(getImg(wImgId));
+            var img = document.getElementById("img");
+            img.src = getImg(wImgId);
+
+            title.appendChild(content);
+            wrp.appendChild(title);
+        }
+    </script>
+  </body>
+</html>
