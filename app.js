@@ -12,6 +12,7 @@ app.get('/wat', function (req, res) {
   res.send("Fuck you!");
 });
 
-
-var port = server.listen(process.env.PORT || 3000);
-app.listen(port);
+var port = (process.env.PORT || 3000);
+app.listen(port, function() {
+    console.log("Listening on port: ", port);
+});
