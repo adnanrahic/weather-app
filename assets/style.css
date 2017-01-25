@@ -1,0 +1,58 @@
+body {
+background: #d3d3d3;
+height:100vh;
+}
+.hidden {
+display: none;
+}
+.visible {
+display: block;
+}
+.strong {
+font-size: 32px;
+font-weight: 300;
+}
+.card-wrp {
+position:relative;
+height:calc(100vh - 90px);
+}
+.card {
+background: white;
+position: absolute;
+/*   min-height: 350px; */
+width:100%;
+top: 50% !important;
+margin-top: -225px;
+border-radius: 3px;
+}
+.mr20 {
+margin-right:20px;
+}
+.card-block {
+padding:20px;
+}
+.card-text {
+float:right;
+margin-top:-15px;
+font-size:24px;
+}
+.temp-icon {
+font-size:12px;
+line-height:inherit;
+position:relative;
+top:-10px;
+}
+
+.active {
+color: #2196F3;
+}
+
+.pointer {
+cursor: pointer;
+}
+
+@media (max-width: 640px) {
+.card {
+    margin-top: -125px;
+}
+}

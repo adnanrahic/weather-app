@@ -3,23 +3,11 @@ var app = express();
 var path = require('path');
 var favicon = require('serve-favicon');
 var request = require("request");
-
-
-
-
-
-
 app.use(favicon(__dirname + '/favicon.ico'));
+app.use('/assets', express.static('assets'));
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
-});
-
-app.get('/location', function(req, res) {
-  var locationApi = "http://freegeoip.net/json/";
-  request(locationApi, function(error, response, body) {
-    res.send(body);
-  });
 });
 app.get('/weather/:lat/:lon/:tempUnitApi', function(req, res) {
   var lat = req.params.lat;
@@ -30,8 +18,5 @@ app.get('/weather/:lat/:lon/:tempUnitApi', function(req, res) {
     res.send(body);
   });
 });
-
 var port = (process.env.PORT || 3000);
-app.listen(port, function() {
-    console.log("Listening on port: ", port);
-});
+app.listen(port);
