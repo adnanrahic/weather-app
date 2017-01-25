@@ -182,29 +182,47 @@
             var tempUnitApi;
             if (tempUnit === "c") tempUnitApi = "metric";
             else if (tempUnit === "f") tempUnitApi = "imperial";
-            
-            var locationApi = "/location";
-            get(locationApi)
-                .then(function(res) {
-                var data = JSON.parse(res.responseText);
-                var lat = Number(data.latitude);
-                var lon = Number(data.longitude);
 
-                var weatherApi = "/weather/"+lat+"/"+lon+"/"+tempUnitApi;
-                return weatherApi;
-                })
-                .then(function(weatherApi) {
-                return get(weatherApi).then(function(res) {
-                    return JSON.parse(res.response);
+            if (navigator.geolocation) {    
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    var weatherApi = "/weather/"+lat+"/"+lon+"/"+tempUnitApi;
+                    get(weatherApi).then(function(res) {
+                        return JSON.parse(res.response);
+                    })
+                    .then(function(weather) {
+                        init(weather, tempUnit);
+                    })
+                    .then(function() {
+                        showCard();
+                        removeMessage(loading);
+                    });
                 });
-                })
-                .then(function(weather) {
-                init(weather, tempUnit);
-                })
-                .then(function() {
-                showCard();
-                removeMessage(loading);
-                });
+            }
+            
+            // var locationApi = "/location";
+            // get(locationApi)
+            //     .then(function(res) {
+            //     var data = JSON.parse(res.responseText);
+            //     var lat = Number(data.latitude);
+            //     var lon = Number(data.longitude);
+
+            //     var weatherApi = "/weather/"+lat+"/"+lon+"/"+tempUnitApi;
+            //     return weatherApi;
+            //     })
+            //     .then(function(weatherApi) {
+            //     return get(weatherApi).then(function(res) {
+            //         return JSON.parse(res.response);
+            //     });
+            //     })
+            //     .then(function(weather) {
+            //     init(weather, tempUnit);
+            //     })
+            //     .then(function() {
+            //     showCard();
+            //     removeMessage(loading);
+            //     });
         }
         function generateTitle(weather) {
             var title = document.createElement("h4");
