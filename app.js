@@ -4,10 +4,10 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var request = require("request");
 app.use(favicon(__dirname + '/favicon.ico'));
-app.use('/assets', express.static('assets'));
+app.use('/app', express.static('app'));
 
 app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname + '/index.html'));
+  res.sendFile(path.join(__dirname + '/app/index.html'));
 });
 app.get('/weather/:lat/:lon/:tempUnitApi', function(req, res) {
   var lat = req.params.lat;
