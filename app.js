@@ -5,6 +5,7 @@ var favicon = require('serve-favicon');
 var request = require("request");
 app.use(favicon(__dirname + '/favicon.ico'));
 app.use('/app', express.static('app'));
+app.use('/app/assets', express.static('assets'));
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/app/index.html'));

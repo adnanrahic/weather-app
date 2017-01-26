@@ -32,15 +32,16 @@ function removeMessage(el) {
     var wrp = document.getElementById("card-wrp");
     wrp.removeChild(el);
 }
+var origin = window.location.href;
 var images = {
-    thunderstorm: "http://pre01.deviantart.net/d725/th/pre/f/2013/162/0/1/landscape_with_the_thunderstorm_by_macinivnw-d68mww1.jpg",
-    drizzle: "http://hinhanhdep.pro/content/uploads/2014/10/xem-hinh-anh-con-mua-270-14.jpg",
-    rain: "https://www.ibiza2day.com/wp-content/uploads/2015/03/rain.jpg",
-    snow: "http://restoring-donbass.com/en/wp-content/uploads/2015/10/White-snow-on-a-blank-page.-Lena-Danilova.jpg",
-    atmosphere: "http://kingofwallpapers.com/mist/mist-004.jpg",
-    clear: "http://novatv.mk/wp-content/uploads/2016/07/sunshinesky_ukcountryside_g_wp1.jpg",
-    clouds: "http://www.wetter-foto.de/images/upload/orig/012408.jpg",
-    extreme: "http://m.memegen.com/i7fvjq.jpg"
+    thunderstorm: origin+"app/assets/thunderstorm.jpg",
+    drizzle: origin+"app/assets/drizzle.jpg",
+    rain: origin+"app/assets/rain.jpg",
+    snow: origin+"app/assets/snow.jpg",
+    atmosphere: origin+"app/assets/atmosphere.jpg",
+    clear: origin+"app/assets/clear.jpg",
+    clouds: origin+"app/assets/clouds.jpg",
+    extreme: origin+"app/assets/extreme.jpg"
 };
 function getImg(id) {
     if (id >= 200 && id < 300) return images.thunderstorm;
